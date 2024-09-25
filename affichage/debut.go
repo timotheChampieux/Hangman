@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Debut(mot string) {
+func Debut(mot string) []string {
 	motMasque := []string{}
 	for i := 0; i < len(mot); i++ {
 		motMasque = append(motMasque, "_")
@@ -26,4 +26,5 @@ func Debut(mot string) {
 	for i := 0; i < len(motMasque); i++ {
 		fmt.Printf("%v ", motMasque[i])
 	}
+	return motMasque
 }
