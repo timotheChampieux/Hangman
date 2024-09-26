@@ -7,6 +7,7 @@ import (
 )
 
 func Debut(mot string) []string {
+	ImgDebut()
 	motMasque := []string{}
 	for i := 0; i < len(mot); i++ {
 		motMasque = append(motMasque, "_")
