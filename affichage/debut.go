@@ -17,7 +17,8 @@ func Debut(mot string) []string {
 		max := len(motMasque)
 		indexLettreAletoire := rand.Intn(max)
 		motMasque[indexLettreAletoire] = string(mot[indexLettreAletoire])
-	} else {
+	}
+	if len(mot) > 4 {
 		max := len(motMasque)
 		indexLettreAletoire := rand.Intn(max)
 		indexLettreAletoire1 := rand.Intn(max)

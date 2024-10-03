@@ -3,12 +3,15 @@ package jeu
 import (
 	"fmt"
 	"hangman/affichage"
-	"strings"
 )
 
 func demanderElement(slice *[]string) string {
 	for {
-		fmt.Print("Entrez une lettre ou un mot: ")
+		fmt.Print("\nElement déja choisi : ")
+		for _, char := range *slice {
+			fmt.Print(char, "  ")
+		}
+		fmt.Print("\n\033[32mEntrez une lettre ou un mot:\033[0m \n")
 		var lettre string
 		fmt.Scanln(&lettre)
 
@@ -16,7 +19,7 @@ func demanderElement(slice *[]string) string {
 			*slice = append(*slice, lettre)
 			return lettre
 		} else {
-			fmt.Println("Vous avez déja choisi cette lettre ou ce mot veuillez ressayer.")
+			fmt.Println("\n\033[31mVous avez déja choisi cette lettre ou ce mot veuillez ressayer.\033[0m\n")
 		}
 	}
 }
@@ -34,63 +37,56 @@ func Jeu(mot string, motMasque []string) {
 	essaie := 8
 	lettreDejaPropose := []string{}
 	var reussitte int
+
 	if len(motMasque) <= 5 {
 		reussitte = len(motMasque) - 1
 	} else {
 		reussitte = len(motMasque) - 2
 	}
+
 	for essaie > 1 && reussitte > 0 {
+		fmt.Println(reussitte)
 
 		lettre := demanderElement(&lettreDejaPropose)
 
-		fmt.Println(lettreDejaPropose) //suprr plus tard
-		var index []int
-		indexDebut := strings.Index(mot, lettre)
-		index = append(index, indexDebut)
-		for indexDebut != -1 {
-			indexDebut = strings.Index(mot[indexDebut:], lettre)
-			index = append(index, indexDebut)
-		}
-
-		if indexDebut == -1 && len(index) < 1 {
-			if len(lettre) < 2 {
+		if len(lettre) == 1 {
+			var count int
+			for i := 0; i < len(mot); i++ {
+				if lettre == string(mot[i]) && lettre != motMasque[i] {
+					motMasque[i] = lettre
+					reussitte--
+					count++
+				}
+			}
+			if count == 0 {
 				essaie--
+				fmt.Printf("\n\033[31mLa lettre que vous avez entré n'est pas contenue dans le mot, il vous reste %v vies\033[0m \n", essaie)
 				affichage.AfficherPendu(essaie)
 			} else {
-				essaie -= 1
-				affichage.AfficherPendu(essaie)
-				essaie -= 1
-				affichage.AfficherPendu(essaie)
-			}
-
-			fmt.Printf("La lettre que vous avez entré n'est pas contenue dans le mot, il vous reste %v vies \n", essaie)
-		} else if len(index) < 1 {
-			fmt.Printf("Vous avez trouvé, il vous reste %v vies \n", essaie-1)
-			for index, _ := range lettre {
-
-				fmt.Print("\n", reussitte)
-				if motMasque[indexDebut] != string(lettre[index]) {
-					motMasque[indexDebut] = string(lettre[index])
-
-					reussitte--
+				for i := 0; i < len(motMasque); i++ {
+					fmt.Printf("%v ", motMasque[i])
 				}
-				indexDebut++
-
+			}
+		} else {
+			if lettre == mot {
+				for i := 0; i < len(mot); i++ {
+					motMasque[i] = string(lettre[i])
+				}
+				for i := 0; i < len(motMasque); i++ {
+					fmt.Printf("%v ", motMasque[i])
+				}
+				reussitte = 0
+			} else {
+				essaie -= 2
+				affichage.AfficherPendu(essaie)
 			}
 
-		} else {
-			//si la lettre est plusieur fois dans le mot toute ses positions sont dans index normalement
-			fmt.Println(index)
-		}
-
-		for i := 0; i < len(motMasque); i++ {
-			fmt.Printf("%v ", motMasque[i])
 		}
 	}
 	if reussitte <= 0 {
-		fmt.Println("\nVous avez gagné !!")
+		fmt.Println("\n\033[32mVous avez gagné !!\033[0m")
 	} else {
-		fmt.Println("\nVous avez perdu...")
+		fmt.Println("\n\033[31mVous avez perdu...\033[0m")
 
 	}
 }
