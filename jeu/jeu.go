@@ -43,9 +43,16 @@ func Jeu(mot string, motMasque []string) {
 
 		lettre := demanderElement(&lettreDejaPropose)
 
-		fmt.Println(lettreDejaPropose)
+		fmt.Println(lettreDejaPropose) //suprr plus tard
+		var index []int
 		indexDebut := strings.Index(mot, lettre)
-		if indexDebut == -1 {
+		index = append(index, indexDebut)
+		for indexDebut != -1 {
+			indexDebut = strings.Index(mot[indexDebut:], lettre)
+			index = append(index, indexDebut)
+		}
+
+		if indexDebut == -1 && len(index) < 1 {
 			if len(lettre) < 2 {
 				essaie--
 				affichage.AfficherPendu(essaie)
@@ -57,18 +64,23 @@ func Jeu(mot string, motMasque []string) {
 			}
 
 			fmt.Printf("La lettre que vous avez entré n'est pas contenue dans le mot, il vous reste %v vies \n", essaie)
-		} else {
+		} else if len(index) < 1 {
 			fmt.Printf("Vous avez trouvé, il vous reste %v vies \n", essaie-1)
 			for index, _ := range lettre {
+
 				fmt.Print("\n", reussitte)
 				if motMasque[indexDebut] != string(lettre[index]) {
 					motMasque[indexDebut] = string(lettre[index])
+
 					reussitte--
 				}
-
 				indexDebut++
 
 			}
+
+		} else {
+			//si la lettre est plusieur fois dans le mot toute ses positions sont dans index normalement
+			fmt.Println(index)
 		}
 
 		for i := 0; i < len(motMasque); i++ {

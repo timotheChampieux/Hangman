@@ -2,28 +2,38 @@ package recupmot
 
 import (
 	"bufio"
+	"log"
 	"math/rand"
 	"os"
 	"time"
 )
 
-func Recup() string {
+func Recup(fichier string) string {
 
-	file, _ := os.Open(".\\recupMot\\mot.txt") // on ouvre le fichier mot.go
-	defer file.Close()                         // garantie que e fichier sera fermé une fois que la fonction aura terminé son exécution
-	scanner := bufio.NewScanner(file)          // lecture du fichier ligne par ligne
+	file, err := os.Open(fichier)
+	if err != nil {
+		log.Fatalf("Erreur : Impossible d'ouvrir le fichier mot.txt. Vérifiez que le fichier existe et est lisible. Détails : %v", err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
 
 	var mots []string
-	var i int
 
 	for scanner.Scan() {
-		ligne := scanner.Text()    // Récupérer la ligne actuelle
-		mots = append(mots, ligne) // Ajouter les mots à la liste
-		i++
+		ligne := scanner.Text()
+		mots = append(mots, ligne)
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatalf("Erreur lors de la lecture du fichier mot.txt : %v", err)
+	}
+
+	if len(mots) == 0 {
+		log.Fatalf("Erreur : Le fichier mot.txt est vide.")
 	}
 
 	rand.Seed(time.Now().UnixNano())
-	max := len(mots)
-	indexMotAleatoire := rand.Intn(max)
-	return mots[indexMotAleatoire] // retourne le mot aleatoire a trouver
+	indexMotAleatoire := rand.Intn(len(mots))
+	return mots[indexMotAleatoire]
 }
