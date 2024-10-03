@@ -20,7 +20,7 @@ sot
 tas
 tic
 beau
-bête
+bete
 boxe
 brun
 cerf
@@ -77,9 +77,9 @@ cache
 capot
 carte
 chien
-crâne
+crane
 cycle
-Ébène
+ebene
 essai
 gifle
 honni
@@ -91,7 +91,7 @@ maman
 moult
 noeud
 ortie
-pêche
+peche
 poire
 pomme
 poste
@@ -184,7 +184,7 @@ iceberg
 javelot
 jockey
 journal
-journée
+journee
 jouxter
 losange
 macadam
@@ -242,7 +242,7 @@ tourisme
 triangle
 utopique
 zeppelin
-accordéon
+accordeon
 ascenseur
 ascension
 aseptiser
@@ -296,7 +296,7 @@ subjective
 baccalaureat
 abracadabra
 francophile
-pandémonium
+pandemonium
 chlorophylle
 metallurgie
 metamorphose

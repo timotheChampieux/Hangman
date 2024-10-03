@@ -3,15 +3,32 @@ package jeu
 import (
 	"fmt"
 	"hangman/affichage"
+	"os"
+	"os/exec"
+	"runtime"
+	"time"
 )
 
+func ClearScreen() {
+	switch runtime.GOOS {
+	case "windows": // Commande pour effacer ecran Windows
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	default: //ca efface sur linux
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+}
+
 func demanderElement(slice *[]string) string {
+	fmt.Print("\n\nElement déja choisi :\n ")
+	for _, char := range *slice {
+		fmt.Print(char, "  ")
+	}
 	for {
-		fmt.Print("\nElement déja choisi : ")
-		for _, char := range *slice {
-			fmt.Print(char, "  ")
-		}
-		fmt.Print("\n\033[32mEntrez une lettre ou un mot:\033[0m \n")
+		fmt.Print("\n\n\033[32mEntrez une lettre ou un mot:\033[0m \n")
 		var lettre string
 		fmt.Scanln(&lettre)
 
@@ -19,7 +36,8 @@ func demanderElement(slice *[]string) string {
 			*slice = append(*slice, lettre)
 			return lettre
 		} else {
-			fmt.Println("\n\033[31mVous avez déja choisi cette lettre ou ce mot veuillez ressayer.\033[0m\n")
+			time.Sleep(1 * time.Second)
+			fmt.Println("\n\033[31mVous avez déja choisi cette lettre ou ce mot veuillez ressayer.\033[0m")
 		}
 	}
 }
@@ -45,8 +63,15 @@ func Jeu(mot string, motMasque []string) {
 	}
 
 	for essaie > 1 && reussitte > 0 {
-		fmt.Println(reussitte)
 
+		time.Sleep(2 * time.Second)
+		ClearScreen()
+
+		affichage.AfficherPendu(essaie)
+		fmt.Printf("\033[31mNombre de vie : %v\n\n\033[0m", essaie-1)
+		for i := 0; i < len(motMasque); i++ {
+			fmt.Printf("%v ", motMasque[i])
+		}
 		lettre := demanderElement(&lettreDejaPropose)
 
 		if len(lettre) == 1 {
@@ -60,33 +85,39 @@ func Jeu(mot string, motMasque []string) {
 			}
 			if count == 0 {
 				essaie--
-				fmt.Printf("\n\033[31mLa lettre que vous avez entré n'est pas contenue dans le mot, il vous reste %v vies\033[0m \n", essaie)
-				affichage.AfficherPendu(essaie)
-			} else {
-				for i := 0; i < len(motMasque); i++ {
-					fmt.Printf("%v ", motMasque[i])
-				}
+				fmt.Printf("\n\033[31mLa lettre que vous avez entré n'est pas contenue dans le mot.\033[0m \n")
+				time.Sleep(1 * time.Second)
+				//affichage.AfficherPendu(essaie)
 			}
+
 		} else {
 			if lettre == mot {
 				for i := 0; i < len(mot); i++ {
 					motMasque[i] = string(lettre[i])
 				}
-				for i := 0; i < len(motMasque); i++ {
-					fmt.Printf("%v ", motMasque[i])
-				}
 				reussitte = 0
 			} else {
 				essaie -= 2
-				affichage.AfficherPendu(essaie)
+				fmt.Printf("\n\033[31mCe n'est pas le bon mot.\033[0m \n")
+				time.Sleep(1 * time.Second)
+				//affichage.AfficherPendu(essaie)
 			}
 
 		}
 	}
 	if reussitte <= 0 {
-		fmt.Println("\n\033[32mVous avez gagné !!\033[0m")
-	} else {
-		fmt.Println("\n\033[31mVous avez perdu...\033[0m")
+		essaie = -1
+		time.Sleep(1 * time.Second)
+		affichage.AfficherPendu(essaie)
+		time.Sleep(1 * time.Second)
+		fmt.Printf("\n\033[32mVous avez gagné !! Le mot etait bien %v.\033[0m", mot)
+		time.Sleep(3 * time.Second)
 
+	} else {
+		time.Sleep(1 * time.Second)
+		affichage.AfficherPendu(essaie)
+		time.Sleep(1 * time.Second)
+		fmt.Printf("\n\033[31mVous avez perdu... Le mot etait %v.\033[0m", mot)
+		time.Sleep(3 * time.Second)
 	}
 }

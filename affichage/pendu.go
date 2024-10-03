@@ -49,7 +49,7 @@ func AfficherPendu(etape int) {
   +---+
   |   |
   O   |
- /|\\  |
+ /|\  |
       |
       |
 =========
@@ -74,7 +74,25 @@ func AfficherPendu(etape int) {
       |
 =========
 		`)
+	case -1:
+		fmt.Println(`
+  +---+
+      |
+      |
+  O/  |
+ /|   |
+ / \  |
+=========
+		`)
 	default:
-		fmt.Println("Aucune étape disponible pour cette valeur.")
+		fmt.Println(`
+  +---+
+      |
+      |
+      |
+      |
+      |
+=========
+                      `)
 	}
 }
