@@ -11,18 +11,16 @@ func Debut(mot string) []string {
 	for i := 0; i < len(mot); i++ {
 		motMasque = append(motMasque, "_")
 	}
-	if len(mot) < 5 {
+	if len(mot) <= 5 {
 		rand.Seed(time.Now().UnixNano())
 		max := len(motMasque)
 		indexLettreAletoire := rand.Intn(max)
 		motMasque[indexLettreAletoire] = string(mot[indexLettreAletoire])
-	}
-	if len(mot) > 4 {
+	} else if len(mot) > 5 {
 		max := len(motMasque)
-		indexLettreAletoire := rand.Intn(max)
-		indexLettreAletoire1 := rand.Intn(max)
-		motMasque[indexLettreAletoire] = string(mot[indexLettreAletoire])
-		motMasque[indexLettreAletoire1] = string(mot[indexLettreAletoire1])
+		indexLettreAletoire := rand.Intn(max - 1)
+		motMasque[indexLettreAletoire+1] = string(mot[indexLettreAletoire+1])
+		motMasque[0] = string(mot[0])
 	}
 	for i := 0; i < len(motMasque); i++ {
 		fmt.Printf("%v ", motMasque[i])

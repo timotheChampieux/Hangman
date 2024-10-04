@@ -1230,8 +1230,8 @@ genoux
 pieds
 protection
 casque
-protège-dents
-protègetibias
+protege-dents
+protegetibias
 gant
 bandage
 short
@@ -1246,7 +1246,7 @@ paodefrappe
 corderemontante
 ballonmedecine
 cordes
-altères
+alteres
 halterophilie
 courir
 grimper
@@ -1473,7 +1473,7 @@ smoothie
 the
 cafe
 vin
-bière
+biere
 liqueur
 aperitif
 digestif
